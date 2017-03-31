@@ -44,24 +44,24 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web:1.5.2.RELEASE'
 
 
-    compile 'com.google.code.gson:gson:2.8.0'
-    compile 'com.squareup.okhttp3:okhttp:3.6.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
-    compile 'com.squareup.retrofit2:retrofit:2.2.0'
-    compile 'com.squareup.retrofit2:converter-jackson:2.2.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+//    compile 'com.google.code.gson:gson:2.8.0'
+//    compile 'com.squareup.okhttp3:okhttp:3.3.0'
+//    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+//    compile 'com.squareup.retrofit2:retrofit:2.2.0'
+//    compile 'com.squareup.retrofit2:converter-jackson:2.2.0'
+//    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
 
     compile('com.linecorp.bot:line-bot-api-client:1.6.0')
     compile('com.linecorp.bot:line-bot-model:1.6.0')
     compile('com.linecorp.bot:line-bot-servlet:1.6.0')
     compile('com.linecorp.bot:line-bot-spring-boot:1.6.0')
 
-    compile 'info.guardianproject.netcipher:netcipher:1.2'
+//    compile 'info.guardianproject.netcipher:netcipher:1.2'
 //    compile 'com.ibm.watson.developer_cloud:java-sdk:3.5.3'
     
-    compile('org.postgresql:postgresql:9.4.1212')
-    compile('org.postgresql:postgresql:9.4.1212.jre7')
-    compile('org.springframework:spring-jdbc:4.3.2.RELEASE')
+//    compile('org.postgresql:postgresql:9.4.1212')
+//    compile('org.postgresql:postgresql:9.4.1212.jre7')
+//    compile('org.springframework:spring-jdbc:4.3.2.RELEASE')
 //    testCompile 'com.squareup.okhttp3:mockwebserver'
 //    testCompile 'com.squareup.okhttp3:mockwebserver:3.6.0'
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat:1.5.2.RELEASE')

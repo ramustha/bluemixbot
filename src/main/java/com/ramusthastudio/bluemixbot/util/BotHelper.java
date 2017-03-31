@@ -65,7 +65,7 @@ public final class BotHelper {
   private static LineMessagingService lineServiceBuilder(String aChannelAccessToken) {
     OkHttpClient.Builder client = new OkHttpClient.Builder();
 
-    LOG.info("Starting line messaging service...");
+    LOG.info("Starting line messaging service x...");
     return LineMessagingServiceBuilder
         .create(aChannelAccessToken)
         .okHttpClientBuilder(enableTls12(client))
@@ -74,22 +74,22 @@ public final class BotHelper {
 
   private static OkHttpClient.Builder enableTls12(OkHttpClient.Builder client) {
     try {
-      // TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-      // trustManagerFactory.init((KeyStore) null);
-      // TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
-      // if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
-      //   throw new IllegalStateException("Unexpected default trust managers:"
-      //       + Arrays.toString(trustManagers));
-      // }
-      // X509TrustManager trustManager = (X509TrustManager) trustManagers[0];
-      //
-      // SSLContext sslContext = SSLContext.getInstance("TLS");
-      // sslContext.init(null, new TrustManager[] {trustManager}, null);
-      // SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-      // client.sslSocketFactory(sslSocketFactory, trustManager);
+      TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+      trustManagerFactory.init((KeyStore) null);
+      TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
+      if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
+        throw new IllegalStateException("Unexpected default trust managers:"
+            + Arrays.toString(trustManagers));
+      }
+      X509TrustManager trustManager = (X509TrustManager) trustManagers[0];
+
+      SSLContext sslContext = SSLContext.getInstance("TLS");
+      sslContext.init(null, new TrustManager[] {trustManager}, null);
+      SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+      client.sslSocketFactory(sslSocketFactory, trustManager);
 
       ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
-          .tlsVersions(TlsVersion.TLS_1_0, TlsVersion.TLS_1_2, TlsVersion.TLS_1_3)
+          .tlsVersions(TlsVersion.TLS_1_0, TlsVersion.TLS_1_2)
           .allEnabledCipherSuites()
           .build();
 
