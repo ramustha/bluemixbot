@@ -75,8 +75,7 @@ public final class BotHelper {
 
   private static OkHttpClient.Builder enableTls12(OkHttpClient.Builder client) {
     try {
-      TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(
-          TrustManagerFactory.getDefaultAlgorithm());
+      TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
       trustManagerFactory.init((KeyStore) null);
       TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
       if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
@@ -90,7 +89,7 @@ public final class BotHelper {
       SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
       client.sslSocketFactory(sslSocketFactory, trustManager);
 
-      ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
+      ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.COMPATIBLE_TLS)
           .tlsVersions(TlsVersion.TLS_1_0, TlsVersion.TLS_1_2, TlsVersion.TLS_1_3)
           .supportsTlsExtensions(true)
           .allEnabledCipherSuites()
@@ -108,11 +107,15 @@ public final class BotHelper {
   }
 
   public static Response<BotApiResponse> replayMessage(String aChannelAccessToken, String aReplayToken,
-      String aMsg) throws IOException {
+      String aMsg) {
     TextMessage message = new TextMessage(aMsg);
     ReplyMessage pushMessage = new ReplyMessage(aReplayToken, message);
     LOG.info("replayMessage...");
-    return lineServiceBuilder(aChannelAccessToken).replyMessage(pushMessage).execute();
+    try {
+      return lineServiceBuilder(aChannelAccessToken).replyMessage(pushMessage).execute();
+    } catch (Exception exc) { LOG.error("Error while setting {}", exc.getMessage()); }
+    LOG.info("erorr...");
+    return null;
   }
 
   public static Response<BotApiResponse> pushMessage(String aChannelAccessToken, String aUserId,
