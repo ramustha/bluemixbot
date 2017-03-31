@@ -44,7 +44,7 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web:1.5.2.RELEASE'
 
 
-//    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.google.code.gson:gson:2.8.0'
 //    compile 'com.squareup.okhttp3:okhttp:3.3.0'
 //    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
 //    compile 'com.squareup.retrofit2:retrofit:2.2.0'

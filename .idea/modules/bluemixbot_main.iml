@@ -15,6 +15,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-web:1.5.2.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.8.0" level="project" />
     <orderEntry type="library" name="Gradle: com.linecorp.bot:line-bot-api-client:1.6.0" level="project" />
     <orderEntry type="library" name="Gradle: com.linecorp.bot:line-bot-model:1.6.0" level="project" />
     <orderEntry type="library" name="Gradle: com.linecorp.bot:line-bot-servlet:1.6.0" level="project" />
