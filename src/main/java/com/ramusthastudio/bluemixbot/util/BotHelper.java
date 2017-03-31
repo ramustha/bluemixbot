@@ -15,9 +15,8 @@ import com.linecorp.bot.model.profile.UserProfileResponse;
 import com.linecorp.bot.model.response.BotApiResponse;
 import java.io.IOException;
 import java.security.KeyStore;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
 import java.util.Random;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -29,12 +28,24 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
-import okhttp3.TlsVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import retrofit2.Response;
 
 import static com.ramusthastudio.bluemixbot.util.StickerHelper.JAMES_STICKER_TWO_THUMBS;
+import static okhttp3.CipherSuite.TLS_DHE_RSA_WITH_AES_128_CBC_SHA;
+import static okhttp3.CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256;
+import static okhttp3.CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA;
+import static okhttp3.CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA;
+import static okhttp3.CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256;
+import static okhttp3.CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA;
+import static okhttp3.CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA;
+import static okhttp3.CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256;
+import static okhttp3.CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA;
+import static okhttp3.CipherSuite.TLS_RSA_WITH_3DES_EDE_CBC_SHA;
+import static okhttp3.CipherSuite.TLS_RSA_WITH_AES_128_CBC_SHA;
+import static okhttp3.CipherSuite.TLS_RSA_WITH_AES_128_GCM_SHA256;
+import static okhttp3.CipherSuite.TLS_RSA_WITH_AES_256_CBC_SHA;
 
 public final class BotHelper {
   private static final Logger LOG = LoggerFactory.getLogger(BotHelper.class);
@@ -87,15 +98,24 @@ public final class BotHelper {
       client.sslSocketFactory(sslSocketFactory, trustManager);
 
       ConnectionSpec cs = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
-          .tlsVersions(TlsVersion.TLS_1_3)
+          .allEnabledTlsVersions()
+          .cipherSuites(
+              TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+              TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+              TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,
+              TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,
+              TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
+              TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
+              TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
+              TLS_DHE_RSA_WITH_AES_128_CBC_SHA,
+              TLS_DHE_RSA_WITH_AES_256_CBC_SHA,
+              TLS_RSA_WITH_AES_128_GCM_SHA256,
+              TLS_RSA_WITH_AES_128_CBC_SHA,
+              TLS_RSA_WITH_AES_256_CBC_SHA,
+              TLS_RSA_WITH_3DES_EDE_CBC_SHA)
+          .supportsTlsExtensions(true)
           .build();
-
-      List<ConnectionSpec> specs = new ArrayList<>();
-      specs.add(cs);
-      specs.add(ConnectionSpec.COMPATIBLE_TLS);
-      specs.add(ConnectionSpec.CLEARTEXT);
-
-      client.connectionSpecs(specs);
+      client.connectionSpecs(Collections.singletonList(cs));
     } catch (Exception exc) {
       LOG.error("Error while setting {}", exc.getMessage());
     }
