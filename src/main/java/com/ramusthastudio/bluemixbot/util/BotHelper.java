@@ -65,7 +65,7 @@ public final class BotHelper {
     LOG.info("Starting line messaging service...");
     return LineMessagingServiceBuilder
         .create(aChannelAccessToken)
-        // .okHttpClientBuilder(enableTls12(client))
+        .okHttpClientBuilder(enableTls12(client))
         .build();
   }
 
@@ -87,7 +87,7 @@ public final class BotHelper {
       client.sslSocketFactory(sslSocketFactory, trustManager);
 
       ConnectionSpec cs = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
-          .tlsVersions(TlsVersion.TLS_1_0)
+          .tlsVersions(TlsVersion.TLS_1_3)
           .build();
 
       List<ConnectionSpec> specs = new ArrayList<>();

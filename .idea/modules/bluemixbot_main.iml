@@ -16,13 +16,15 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-web:1.5.2.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.8.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.okhttp3:okhttp:3.6.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.okhttp3:logging-interceptor:3.6.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.retrofit2:retrofit:2.2.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.retrofit2:converter-jackson:2.2.0" level="project" />
     <orderEntry type="library" name="Gradle: com.squareup.retrofit2:converter-gson:2.1.0" level="project" />
     <orderEntry type="library" name="Gradle: com.linecorp.bot:line-bot-api-client:1.6.0" level="project" />
     <orderEntry type="library" name="Gradle: com.linecorp.bot:line-bot-model:1.6.0" level="project" />
     <orderEntry type="library" name="Gradle: com.linecorp.bot:line-bot-servlet:1.6.0" level="project" />
     <orderEntry type="library" name="Gradle: com.linecorp.bot:line-bot-spring-boot:1.6.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.twitter4j:twitter4j-core:4.0.3" level="project" />
-    <orderEntry type="library" name="Gradle: com.ibm.watson.developer_cloud:java-sdk:3.5.3" level="project" />
     <orderEntry type="library" name="Gradle: org.postgresql:postgresql:9.4.1212.jre7" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-jdbc:4.3.2.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter:1.5.2.RELEASE" level="project" />
@@ -31,32 +33,15 @@
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.8.7" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-web:4.3.7.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-webmvc:4.3.7.RELEASE" level="project" />
-    <orderEntry type="library" name="Gradle: com.squareup.retrofit2:retrofit:2.1.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.okio:okio:1.11.0" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.8.7" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.7" level="project" />
-    <orderEntry type="library" name="Gradle: com.squareup.okhttp3:logging-interceptor:3.4.2" level="project" />
-    <orderEntry type="library" name="Gradle: com.squareup.retrofit2:converter-jackson:2.1.0" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.24" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.8.0" level="project" />
     <orderEntry type="library" name="Gradle: com.google.guava:guava:17.0" level="project" />
     <orderEntry type="library" name="Gradle: javax.servlet:javax.servlet-api:3.1.0" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-autoconfigure:1.5.2.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: javax.validation:validation-api:1.1.0.Final" level="project" />
-    <orderEntry type="library" name="Gradle: com.ibm.watson.developer_cloud:alchemy:3.5.3" level="project" />
-    <orderEntry type="library" name="Gradle: com.ibm.watson.developer_cloud:conversation:3.5.3" level="project" />
-    <orderEntry type="library" name="Gradle: com.ibm.watson.developer_cloud:dialog:3.5.3" level="project" />
-    <orderEntry type="library" name="Gradle: com.ibm.watson.developer_cloud:discovery:3.5.3" level="project" />
-    <orderEntry type="library" name="Gradle: com.ibm.watson.developer_cloud:document-conversion:3.5.3" level="project" />
-    <orderEntry type="library" name="Gradle: com.ibm.watson.developer_cloud:language-translation:3.5.3" level="project" />
-    <orderEntry type="library" name="Gradle: com.ibm.watson.developer_cloud:language-translator:3.5.3" level="project" />
-    <orderEntry type="library" name="Gradle: com.ibm.watson.developer_cloud:natural-language-classifier:3.5.3" level="project" />
-    <orderEntry type="library" name="Gradle: com.ibm.watson.developer_cloud:personality-insights:3.5.3" level="project" />
-    <orderEntry type="library" name="Gradle: com.ibm.watson.developer_cloud:retrieve-and-rank:3.5.3" level="project" />
-    <orderEntry type="library" name="Gradle: com.ibm.watson.developer_cloud:speech-to-text:3.5.3" level="project" />
-    <orderEntry type="library" name="Gradle: com.ibm.watson.developer_cloud:text-to-speech:3.5.3" level="project" />
-    <orderEntry type="library" name="Gradle: com.ibm.watson.developer_cloud:tone-analyzer:3.5.3" level="project" />
-    <orderEntry type="library" name="Gradle: com.ibm.watson.developer_cloud:tradeoff-analytics:3.5.3" level="project" />
-    <orderEntry type="library" name="Gradle: com.ibm.watson.developer_cloud:visual-recognition:3.5.3" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-beans:4.3.7.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-core:4.3.7.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-tx:4.3.7.RELEASE" level="project" />
@@ -71,16 +56,10 @@
     <orderEntry type="library" name="Gradle: org.springframework:spring-aop:4.3.7.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-context:4.3.7.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-expression:4.3.7.RELEASE" level="project" />
-    <orderEntry type="library" name="Gradle: com.ibm.watson.developer_cloud:core:3.5.3" level="project" />
-    <orderEntry type="library" name="Gradle: com.squareup.okhttp3:okhttp-ws:3.3.1" level="project" />
     <orderEntry type="library" name="Gradle: ch.qos.logback:logback-classic:1.1.11" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.24" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:jul-to-slf4j:1.7.24" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:log4j-over-slf4j:1.7.24" level="project" />
-    <orderEntry type="library" name="Gradle: com.squareup.okhttp3:okhttp-urlconnection:3.3.1" level="project" />
-    <orderEntry type="library" name="Gradle: org.glassfish.jersey.bundles.repackaged:jersey-jsr166e:2.22.2" level="project" />
     <orderEntry type="library" name="Gradle: ch.qos.logback:logback-core:1.1.11" level="project" />
-    <orderEntry type="library" name="Gradle: com.squareup.okhttp3:okhttp:3.4.2" level="project" />
-    <orderEntry type="library" name="Gradle: com.squareup.okio:okio:1.9.0" level="project" />
   </component>
 </module>
