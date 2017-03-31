@@ -26,7 +26,6 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
-import okhttp3.CipherSuite;
 import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
 import okhttp3.TlsVersion;
@@ -67,14 +66,14 @@ public final class BotHelper {
     OkHttpClient.Builder client = new OkHttpClient.Builder()
         .retryOnConnectionFailure(false);
 
-    LOG.info("Starting line messaging service XXXX...");
+    LOG.info("Starting line messaging service...");
     return LineMessagingServiceBuilder
         .create(aChannelAccessToken)
         .okHttpClientBuilder(enableTls12(client))
         .build();
   }
 
-  public static OkHttpClient.Builder enableTls12(OkHttpClient.Builder client) {
+  private static OkHttpClient.Builder enableTls12(OkHttpClient.Builder client) {
     try {
       TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(
           TrustManagerFactory.getDefaultAlgorithm());
@@ -93,14 +92,12 @@ public final class BotHelper {
 
       ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
           .tlsVersions(TlsVersion.TLS_1_0, TlsVersion.TLS_1_2, TlsVersion.TLS_1_3)
-          .supportsTlsExtensions(false)
+          .supportsTlsExtensions(true)
           .allEnabledCipherSuites()
           .build();
 
       client.connectionSpecs(Collections.singletonList(spec));
-    } catch (Exception exc) {
-      LOG.error("Error while setting {}", exc.getMessage());
-    }
+    } catch (Exception exc) { LOG.error("Error while setting {}", exc.getMessage()); }
     return client;
   }
 
