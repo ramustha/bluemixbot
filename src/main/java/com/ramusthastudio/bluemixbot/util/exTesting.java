@@ -53,7 +53,7 @@ public final class exTesting {
       retrofit2.Response<UserProfileResponse> profile = lineService.getProfile(USERID).execute();
       LOG.info("getProfile mesage {} code {}", profile.message(), profile.code());
 
-      TextMessage message = new TextMessage("edan");
+      TextMessage message = new TextMessage("testing");
       PushMessage pushMessage = new PushMessage(USERID, message);
 
       lineService.pushMessage(pushMessage).execute();
