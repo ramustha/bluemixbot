@@ -95,6 +95,7 @@ public final class BotHelper {
   }
 
   private static LineMessagingService lineServiceBuilder(String aChannelAccessToken) {
+    LOG.info("Starting new line messaging service...");
     OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
     for (Interceptor interceptor : defaultInterceptors(aChannelAccessToken)) {
       okHttpClientBuilder.addInterceptor(interceptor);
@@ -111,7 +112,7 @@ public final class BotHelper {
     builder.baseUrl(DEFAULT_API_END_POINT);
     final Retrofit retrofit = builder.build();
 
-    LOG.info("Starting new line messaging service...");
+    LOG.info("Ending new line messaging service...");
     return retrofit.create(LineMessagingService.class);
   }
 

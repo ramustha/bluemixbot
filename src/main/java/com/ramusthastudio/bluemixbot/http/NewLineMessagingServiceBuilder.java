@@ -139,7 +139,7 @@ public class NewLineMessagingServiceBuilder {
     httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
     return Arrays.asList(
-        new NewHeaderInterceptor(channelToken),
+        new HeaderInterceptor(channelToken),
         httpLoggingInterceptor
     );
   }
