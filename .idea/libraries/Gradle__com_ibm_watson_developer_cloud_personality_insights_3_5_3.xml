@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.ibm.watson.developer_cloud:personality-insights:3.5.3">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ibm.watson.developer_cloud/personality-insights/3.5.3/d79cf9fa0ff4290e7f562a229df3cc62c16a7f46/personality-insights-3.5.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ibm.watson.developer_cloud/personality-insights/3.5.3/3afd77c9e62b1fe90ced600dd4e263f46aee2f80/personality-insights-3.5.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,9 @@
+applications:
+- path: build/libs/bluemixbot-1.0-SNAPSHOT.jar
+  random-route: true
+  memory: 512M
+  instances: 1
+  domain: mybluemix.net
+  name: iambot
+  host: iambot
+  disk_quota: 1024M

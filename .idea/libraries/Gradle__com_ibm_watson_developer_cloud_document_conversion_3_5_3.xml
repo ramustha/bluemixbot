@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.ibm.watson.developer_cloud:document-conversion:3.5.3">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ibm.watson.developer_cloud/document-conversion/3.5.3/784b3b1598e9f86601ebd9354726364c03e4a93/document-conversion-3.5.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ibm.watson.developer_cloud/document-conversion/3.5.3/800e653a7f3e3b9c7e0d8a328131c7a1d1cfa1ef/document-conversion-3.5.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
