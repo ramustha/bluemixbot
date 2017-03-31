@@ -26,8 +26,10 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
+import okhttp3.CipherSuite;
 import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
+import okhttp3.TlsVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import retrofit2.Response;
@@ -65,7 +67,7 @@ public final class BotHelper {
     OkHttpClient.Builder client = new OkHttpClient.Builder()
         .retryOnConnectionFailure(false);
 
-    LOG.info("Starting line messaging service ssl...");
+    LOG.info("Starting line messaging service XXXX...");
     return LineMessagingServiceBuilder
         .create(aChannelAccessToken)
         .okHttpClientBuilder(enableTls12(client))
@@ -89,12 +91,15 @@ public final class BotHelper {
       SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
       client.sslSocketFactory(sslSocketFactory, trustManager);
 
-      ConnectionSpec cs = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
-          .allEnabledTlsVersions()
-          .allEnabledCipherSuites()
-          .supportsTlsExtensions(true)
+      ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
+          .tlsVersions(TlsVersion.TLS_1_2)
+          .cipherSuites(
+              CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+              CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+              CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256)
           .build();
-      client.connectionSpecs(Collections.singletonList(cs));
+
+      client.connectionSpecs(Collections.singletonList(spec));
     } catch (Exception exc) {
       LOG.error("Error while setting {}", exc.getMessage());
     }
