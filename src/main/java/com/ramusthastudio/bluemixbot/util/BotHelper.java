@@ -92,12 +92,9 @@ public final class BotHelper {
       client.sslSocketFactory(sslSocketFactory, trustManager);
 
       ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
-          .tlsVersions(TlsVersion.SSL_3_0)
+          .tlsVersions(TlsVersion.TLS_1_0, TlsVersion.TLS_1_2, TlsVersion.TLS_1_3)
           .supportsTlsExtensions(false)
-          .cipherSuites(
-              CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
-              CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
-              CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256)
+          .allEnabledCipherSuites()
           .build();
 
       client.connectionSpecs(Collections.singletonList(spec));
