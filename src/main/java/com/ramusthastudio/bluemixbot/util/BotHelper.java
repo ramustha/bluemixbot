@@ -1,7 +1,9 @@
 package com.ramusthastudio.bluemixbot.util;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.linecorp.bot.client.LineMessagingService;
-import com.linecorp.bot.client.LineMessagingServiceBuilder;
 import com.linecorp.bot.model.Multicast;
 import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.ReplyMessage;
@@ -13,43 +15,41 @@ import com.linecorp.bot.model.message.template.ConfirmTemplate;
 import com.linecorp.bot.model.message.template.Template;
 import com.linecorp.bot.model.profile.UserProfileResponse;
 import com.linecorp.bot.model.response.BotApiResponse;
+import com.ramusthastudio.bluemixbot.http.HeaderInterceptor;
 import java.io.IOException;
 import java.security.KeyStore;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 import okhttp3.ConnectionSpec;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import static com.ramusthastudio.bluemixbot.util.StickerHelper.JAMES_STICKER_TWO_THUMBS;
-import static okhttp3.CipherSuite.TLS_DHE_RSA_WITH_AES_128_CBC_SHA;
-import static okhttp3.CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256;
-import static okhttp3.CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA;
-import static okhttp3.CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA;
-import static okhttp3.CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256;
-import static okhttp3.CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA;
-import static okhttp3.CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA;
-import static okhttp3.CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256;
-import static okhttp3.CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA;
-import static okhttp3.CipherSuite.TLS_RSA_WITH_3DES_EDE_CBC_SHA;
-import static okhttp3.CipherSuite.TLS_RSA_WITH_AES_128_CBC_SHA;
-import static okhttp3.CipherSuite.TLS_RSA_WITH_AES_128_GCM_SHA256;
-import static okhttp3.CipherSuite.TLS_RSA_WITH_AES_256_CBC_SHA;
 
 public final class BotHelper {
   private static final Logger LOG = LoggerFactory.getLogger(BotHelper.class);
+
+  public static final String DEFAULT_API_END_POINT = "https://api.line.me/";
+  public static final long DEFAULT_CONNECT_TIMEOUT = 10_000;
+  public static final long DEFAULT_READ_TIMEOUT = 10_000;
+  public static final long DEFAULT_WRITE_TIMEOUT = 10_000;
 
   public static final String SOURCE_USER = "user";
   public static final String SOURCE_GROUP = "group";
@@ -70,40 +70,49 @@ public final class BotHelper {
   public static final String MESSAGE_LOCATION = "location";
   public static final String MESSAGE_STICKER = "sticker";
 
+  private static Retrofit.Builder createDefaultRetrofitBuilder() {
+    final ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    // Register JSR-310(java.time.temporal.*) module and read number as millsec.
+    objectMapper.registerModule(new JavaTimeModule())
+        .configure(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
+
+    return new Retrofit.Builder()
+        .addConverterFactory(JacksonConverterFactory.create(objectMapper));
+  }
+
+  private static List<Interceptor> defaultInterceptors(String channelToken) {
+    final Logger slf4jLogger = LoggerFactory.getLogger("com.linecorp.bot.client.wire");
+    final HttpLoggingInterceptor httpLoggingInterceptor =
+        new HttpLoggingInterceptor(message -> slf4jLogger.info("{}", message));
+    httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+    return Arrays.asList(
+        new HeaderInterceptor(channelToken),
+        httpLoggingInterceptor
+    );
+  }
+
   private static LineMessagingService lineServiceBuilder(String aChannelAccessToken) {
-    OkHttpClient.Builder client = new OkHttpClient.Builder()
-        .retryOnConnectionFailure(false);
-
-    LOG.info("Starting line messaging service...");
-
-    try {
-      SSLContext sslContext1 = SSLContext.getInstance("SSL");
-      sslContext1.init(null, null, null);
-      String[] protocols1 = sslContext1.getSupportedSSLParameters().getProtocols();
-      for (String protocol : protocols1) {
-        LOG.info("Context supported protocol: " + protocol);
-      }
-
-      SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
-      sslContext.init(null, null, null);
-      String[] protocols = sslContext.getSupportedSSLParameters().getProtocols();
-      for (String protocol : protocols) {
-        LOG.info("Context supported protocol: " + protocol);
-      }
-
-      SSLEngine engine = sslContext.createSSLEngine();
-      String[] supportedProtocols = engine.getSupportedProtocols();
-      for (String protocol : supportedProtocols) {
-        LOG.info("Engine supported protocol: " + protocol);
-      }
-    } catch (Exception aE) {
-      aE.printStackTrace();
+    OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
+    for (Interceptor interceptor : defaultInterceptors(aChannelAccessToken)) {
+      okHttpClientBuilder.addInterceptor(interceptor);
     }
+    okHttpClientBuilder
+        .connectTimeout(DEFAULT_CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
+        .readTimeout(DEFAULT_READ_TIMEOUT, TimeUnit.MILLISECONDS)
+        .writeTimeout(DEFAULT_WRITE_TIMEOUT, TimeUnit.MILLISECONDS);
 
-    return LineMessagingServiceBuilder
-        .create(aChannelAccessToken)
-        .okHttpClientBuilder(enableTls12(client))
-        .build();
+    final OkHttpClient okHttpClient = okHttpClientBuilder.build();
+
+    Retrofit.Builder builder = createDefaultRetrofitBuilder();
+    builder.client(okHttpClient);
+    builder.baseUrl(DEFAULT_API_END_POINT);
+    final Retrofit retrofit = builder.build();
+
+    LOG.info("Starting new line messaging service...");
+    return retrofit.create(LineMessagingService.class);
   }
 
   public static OkHttpClient.Builder enableTls12(OkHttpClient.Builder client) {
@@ -125,20 +134,7 @@ public final class BotHelper {
 
       ConnectionSpec cs = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
           .allEnabledTlsVersions()
-          .cipherSuites(
-              TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
-              TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
-              TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,
-              TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,
-              TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
-              TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
-              TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
-              TLS_DHE_RSA_WITH_AES_128_CBC_SHA,
-              TLS_DHE_RSA_WITH_AES_256_CBC_SHA,
-              TLS_RSA_WITH_AES_128_GCM_SHA256,
-              TLS_RSA_WITH_AES_128_CBC_SHA,
-              TLS_RSA_WITH_AES_256_CBC_SHA,
-              TLS_RSA_WITH_3DES_EDE_CBC_SHA)
+          .allEnabledCipherSuites()
           .supportsTlsExtensions(true)
           .build();
       client.connectionSpecs(Collections.singletonList(cs));
