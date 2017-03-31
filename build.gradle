@@ -56,6 +56,7 @@ dependencies {
     compile('com.linecorp.bot:line-bot-servlet:1.6.0')
     compile('com.linecorp.bot:line-bot-spring-boot:1.6.0')
 
+    compile 'info.guardianproject.netcipher:netcipher:1.2'
 //    compile 'com.ibm.watson.developer_cloud:java-sdk:3.5.3'
     
     compile('org.postgresql:postgresql:9.4.1212')

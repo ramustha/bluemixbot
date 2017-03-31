@@ -25,6 +25,7 @@
     <orderEntry type="library" name="Gradle: com.linecorp.bot:line-bot-model:1.6.0" level="project" />
     <orderEntry type="library" name="Gradle: com.linecorp.bot:line-bot-servlet:1.6.0" level="project" />
     <orderEntry type="library" name="Gradle: com.linecorp.bot:line-bot-spring-boot:1.6.0" level="project" />
+    <orderEntry type="library" name="Gradle: info.guardianproject.netcipher:netcipher:1.2" level="project" />
     <orderEntry type="library" name="Gradle: org.postgresql:postgresql:9.4.1212.jre7" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-jdbc:4.3.2.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter:1.5.2.RELEASE" level="project" />

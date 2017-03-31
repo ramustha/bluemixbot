@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
@@ -74,6 +75,31 @@ public final class BotHelper {
         .retryOnConnectionFailure(false);
 
     LOG.info("Starting line messaging service...");
+
+    try {
+      SSLContext sslContext1 = SSLContext.getInstance("SSL");
+      sslContext1.init(null, null, null);
+      String[] protocols1 = sslContext1.getSupportedSSLParameters().getProtocols();
+      for (String protocol : protocols1) {
+        LOG.info("Context supported protocol: " + protocol);
+      }
+
+      SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
+      sslContext.init(null, null, null);
+      String[] protocols = sslContext.getSupportedSSLParameters().getProtocols();
+      for (String protocol : protocols) {
+        LOG.info("Context supported protocol: " + protocol);
+      }
+
+      SSLEngine engine = sslContext.createSSLEngine();
+      String[] supportedProtocols = engine.getSupportedProtocols();
+      for (String protocol : supportedProtocols) {
+        LOG.info("Engine supported protocol: " + protocol);
+      }
+    } catch (Exception aE) {
+      aE.printStackTrace();
+    }
+
     return LineMessagingServiceBuilder
         .create(aChannelAccessToken)
         .okHttpClientBuilder(enableTls12(client))
