@@ -66,10 +66,10 @@ public final class BotHelper {
     OkHttpClient.Builder client = new OkHttpClient.Builder()
         .retryOnConnectionFailure(false);
 
-    LOG.info("Starting line messaging service...");
+    LOG.info("Starting line messaging service x...");
     return LineMessagingServiceBuilder
         .create(aChannelAccessToken)
-        .okHttpClientBuilder(enableTls12(client))
+        // .okHttpClientBuilder(enableTls12(client))
         .build();
   }
 
